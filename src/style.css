@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-sm leading-normal font-normal font-kanit
+  }
+
+  #app {
+    @apply flex flex-col w-full min-h-screen
+  }
+}
+
+@layer components{
+  .container{
+    @apply w-full max-w-3xl mx-auto px-5
+  }
+}
