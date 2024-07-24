@@ -6,16 +6,16 @@
 
 @layer base {
   body {
-    @apply text-sm leading-normal font-normal font-kanit bg-grey
+    @apply text-sm leading-normal font-normal font-kanit bg-grey text-mainBlack dark:bg-mainBlack dark:text-grey
   }
 
   #app {
-    @apply flex flex-col w-full min-h-screen;
+    @apply flex flex-col w-full min-h-screen
   }
 }
 
 @layer components {
   .container {
-    @apply w-full max-w-3xl mx-auto px-5;
+    @apply w-full max-w-3xl mx-auto px-5
   }
 }
