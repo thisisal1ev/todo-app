@@ -1,21 +1,29 @@
-@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply text-sm leading-normal font-normal font-kanit bg-grey text-mainBlack dark:bg-mainBlack dark:text-grey
-  }
+	* {
+		@apply outline-none;
+	}
 
-  #app {
-    @apply flex flex-col w-full min-h-screen
-  }
+	body {
+		@apply text-sm leading-normal font-normal font-kanit bg-grey text-mainBlack dark:bg-mainBlack dark:text-grey;
+	}
+
+	#app {
+		@apply flex flex-col w-full min-h-screen;
+	}
 }
 
 @layer components {
-  .container {
-    @apply w-full max-w-3xl mx-auto px-5
-  }
+	.container {
+		@apply w-full max-w-3xl mx-auto px-5;
+	}
+
+	.overlay {
+		@apply fixed top-0 left-0 w-full min-h-screen bg-black/50 z-40;
+	}
 }
