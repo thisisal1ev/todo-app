@@ -1,7 +1,9 @@
 <template>
 	<section class="py-10">
 		<div class="container">
-			<h1 class="pt-10 text-center uppercase font-medium text-[26px] leading-9">
+			<h1
+				class="pt-10 text-center uppercase font-medium text-[26px] leading-9 text-black dark:text-white transition-colors duration-300"
+			>
 				Todo list
 			</h1>
 
@@ -10,7 +12,7 @@
 			>
 				<label class="w-full relative group">
 					<input
-						class="relative w-full lg:w-full py-2 h-10 pl-4 pr-10 rounded-md outline-none bg-transparent border-2 border-violet dark:border-grey dark:bg-mainBlack placeholder:font-medium placeholder:text-base placeholder:leading-4 placeholder:text-[#C3C1E5] placeholder:dark:text-[#666] focus:dark:border-violet transition-colors duration-300"
+						class="relative w-full lg:w-full py-2 h-10 pl-4 pr-10 rounded-md outline-none bg-white border-2 border-violet dark:border-grey dark:bg-mainBlack placeholder:font-medium placeholder:text-base placeholder:leading-4 placeholder:text-[#C3C1E5] placeholder:dark:text-[#666] placeholder:select-none focus:dark:border-violet transition-colors duration-300"
 						type="text"
 						placeholder="Search note..."
 					/>
@@ -31,7 +33,7 @@
 				<div class="flex justify-between items-center space-x-5 lg:space-x-4">
 					<select
 						@change="Filter"
-						class="rounded-md h-10 bg-violet text-grey px-2 py-1 lg:w-28 outline-none transition-colors duration-300"
+						class="rounded-md h-10 bg-violet text-grey px-2 py-1 lg:w-28 outline-none uppercase font-medium text-xs"
 					>
 						<option disabled selected>Filter</option>
 						<option value="all">All</option>
@@ -97,17 +99,49 @@
 				@remove-todo="removeTodo"
 			/>
 
-			<p v-else class="text-3xl font-bold text-center pt-10 select-none">
-				Notes not found
-			</p>
+			<div
+				v-else
+				class="flex items-center pt-10 flex-col select-none space-y-5"
+			>
+				<img
+					v-if="isDarkMode"
+					src="./assets/img/detective-dark.png"
+					alt="detective"
+					loading="lazy"
+					width="200"
+					height="170"
+				/>
 
-			<Modal v-if="openModal" :openModal="openModal" @click="close" />
+				<img
+					v-else
+					src="./assets/img/detective.png"
+					alt="detective"
+					loading="lazy"
+					width="200"
+					height="170"
+				/>
+
+				<p
+					class="text-xl leading-5 font-normal text-center text-black dark:text-white transition-colors duration-300"
+				>
+					Empty...
+				</p>
+			</div>
+
+			<Modal
+				v-if="modal"
+				:modalProps="modal"
+				@close="closeModal"
+				@keydown.esc="closeModal"
+				@click="closeModal"
+			/>
 		</div>
 	</section>
 
 	<button
 		class="bg-violet border-2 border-violet absolute bottom-8 right-8 md:right-20 lg:right-[12%] xl:right-[25%] p-3 rounded-full active:bg-grey transition-colors duration-300 outline-none group"
-		@click="open"
+		@click="openModal"
+		@keydown.esc="closeModal"
 	>
 		<svg
 			width="24"
@@ -128,21 +162,20 @@
 </template>
 
 <script setup>
-import Todos from './components/Todos.vue'
+import { onMounted, ref } from 'vue'
 import Modal from './components/Modal.vue'
-import { ref, onMounted, computed } from 'vue'
+import Todos from './components/Todos.vue'
 
 const storedTheme = localStorage.getItem('theme') || 'light'
 const isDarkMode = ref(storedTheme === 'dark')
-const selectValue = ref('')
-const openModal = ref(false)
+let modal = ref(false)
 
-const open = () => {
-	openModal.value = true
+function openModal() {
+	modal.value = true
 }
 
-const close = () => {
-	openModal.value = false
+function closeModal() {
+	modal.value = false
 }
 
 onMounted(() => {
@@ -172,6 +205,7 @@ const todos = ref([
 
 const removeTodo = function (id) {
 	displayedTodos.value = displayedTodos.value.filter(t => t.id !== id)
+	todos.value = todos.value.filter(t => t.id !== id)
 }
 
 const displayedTodos = ref([...todos.value])
