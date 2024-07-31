@@ -131,6 +131,7 @@
 			<Modal
 				v-if="modal"
 				:modalProps="modal"
+				@addTodo="addTodo"
 				@close="closeModal"
 				@keydown.esc="closeModal"
 				@click="closeModal"
@@ -221,6 +222,11 @@ const removeTodo = function (id) {
 	todos.value = todos.value.filter(t => t.id !== id)
 }
 
+function addTodo(todo) {
+	todos.value.push(todo)
+	displayedTodos.value.push(todo)
+}
+
 const displayedTodos = ref([...todos.value])
 
 const Filter = e => {
@@ -228,7 +234,7 @@ const Filter = e => {
 	displayedTodos.value = filteredTodos(value)
 }
 
-function filteredTodos(value) {
+const filteredTodos = value => {
 	if (value === 'all') {
 		return todos.value
 	}
