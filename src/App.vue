@@ -166,17 +166,28 @@ import { onMounted, ref } from 'vue'
 import Modal from './components/Modal.vue'
 import Todos from './components/Todos.vue'
 
-const storedTheme = localStorage.getItem('theme') || 'light'
-const isDarkMode = ref(storedTheme === 'dark')
 let modal = ref(false)
+const todos = ref([
+	{ id: 1, title: 'Note #1', completed: false },
+	{ id: 2, title: 'Note #2', completed: true },
+	{ id: 3, title: 'Note #3', completed: false },
+])
 
-function openModal() {
-	modal.value = true
+function getUserTheme() {
+	if (
+		window.matchMedia &&
+		window.matchMedia('(prefers-color-scheme: dark)').matches
+	) {
+		return 'dark'
+	}
+	return 'light'
 }
 
-function closeModal() {
-	modal.value = false
-}
+const userTheme = ref(getUserTheme())
+const storedTheme = localStorage.getItem('theme')
+const isDarkMode = ref(
+	storedTheme ? storedTheme === 'dark' : userTheme.value === 'dark'
+)
 
 onMounted(() => {
 	if (isDarkMode.value) {
@@ -197,11 +208,13 @@ const toggleDarkMode = () => {
 	}
 }
 
-const todos = ref([
-	{ id: 1, title: 'Note #1', completed: false },
-	{ id: 2, title: 'Note #2', completed: true },
-	{ id: 3, title: 'Note #3', completed: false },
-])
+function openModal() {
+	modal.value = true
+}
+
+function closeModal() {
+	modal.value = false
+}
 
 const removeTodo = function (id) {
 	displayedTodos.value = displayedTodos.value.filter(t => t.id !== id)
