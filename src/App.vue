@@ -140,7 +140,7 @@
 	</section>
 
 	<button
-		class="bg-violet border-2 border-violet absolute bottom-8 right-8 md:right-20 lg:right-[12%] xl:right-[25%] p-3 rounded-full active:bg-grey transition-colors duration-300 outline-none group"
+		class="bg-violet border-2 border-violet fixed bottom-8 right-8 md:right-20 lg:right-[12%] xl:right-[25%] p-3 rounded-full active:bg-grey transition-colors duration-300 outline-none group"
 		@click="openModal"
 		@keydown.esc="closeModal"
 	>
@@ -246,7 +246,6 @@ const filteredTodos = value => {
 	if (value === 'uncompleted') {
 		return todos.value.filter(t => !t.completed)
 	}
-
 	return todos.value
 }
 </script>

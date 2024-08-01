@@ -53,6 +53,7 @@
 				v-else
 			>
 				<input
+					:id="'todo-' + value.id"
 					type="text"
 					placeholder="Enter new title"
 					class="pl-3 py-2 pr-3 bg-white dark:bg-mainBlack border-2 border-violet transition-colors duration-300 rounded-md"
