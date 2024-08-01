@@ -41,7 +41,7 @@
 					</svg>
 				</span>
 				<span
-					class="font-medium text-xl leading-5 peer-checked:line-through text-black dark:text-white transition-colors duration-300"
+					class="font-medium text-sm sm:text-base lg:text-xl leading-5 peer-checked:line-through text-black dark:text-white transition-colors duration-300"
 				>
 					{{ value.title }}
 				</span>
@@ -56,12 +56,13 @@
 					:id="'todo-' + value.id"
 					type="text"
 					placeholder="Enter new title"
-					class="pl-3 py-2 pr-3 bg-white dark:bg-mainBlack border-2 border-violet transition-colors duration-300 rounded-md"
+					class="pl-3 py-2 pr-3 bg-white border-violet dark:border-grey dark:bg-mainBlack border-2 focus:!border-violet transition-colors duration-300 rounded-md"
 					value="value.title"
-					@keydown.enter=";(value.title = input), (rename = !rename)"
+					@keydown.enter=";(value.title = input.trim()), (rename = !rename)"
 					v-model="input"
 				/>
 				<button
+					title="apply btn"
 					class="p-2 rounded-full transition-colors duration-300 hover:dark:bg-slate-100/15 flex justify-center items-center outline-none active:dark:bg-slate-100/30 hover:bg-black/15 active:bg-black/30"
 					@click=";(value.title = input), (rename = !rename)"
 				>
@@ -92,6 +93,7 @@
 			class="lg:opacity-0 flex transition-opacity duration-300 items-center space-x-2 group-hover:opacity-100"
 		>
 			<button
+				title="rename btn"
 				class="p-2 rounded-full transition-colors duration-300 hover:dark:bg-slate-100/15 flex justify-center items-center outline-none active:dark:bg-slate-100/30 hover:bg-black/15 active:bg-black/30"
 				@click.stop="toggleRename"
 			>
@@ -134,6 +136,7 @@
 				</svg>
 			</button>
 			<button
+				title="remove btn"
 				class="p-2 rounded-full transition-colors duration-300 hover:dark:bg-slate-100/15 flex items-center justify-center outline-none active:dark:bg-slate-100/30 hover:bg-black/15 active:bg-black/30"
 				@click="$emit('remove-todo', value.id)"
 			>

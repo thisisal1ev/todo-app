@@ -13,7 +13,7 @@
 				<label class="w-full relative group">
 					<input
 						class="relative w-full lg:w-full py-2 h-10 pl-4 pr-10 rounded-md outline-none bg-white border-2 border-violet dark:border-grey dark:bg-mainBlack placeholder:font-medium placeholder:text-base placeholder:leading-4 placeholder:text-[#C3C1E5] placeholder:dark:text-[#666] placeholder:select-none focus:dark:border-violet transition-colors duration-300"
-						type="text"
+						type="search"
 						placeholder="Search note..."
 					/>
 					<svg
@@ -42,6 +42,7 @@
 					</select>
 
 					<button
+						title="toggle dark mode"
 						class="rounded-md h-10 border-2 border-violet bg-violet p-2 active:bg-white transition-colors duration-300 group"
 						@click="toggleDarkMode"
 					>
@@ -140,6 +141,7 @@
 	</section>
 
 	<button
+		title="modal btn"
 		class="bg-violet border-2 border-violet fixed bottom-8 right-8 md:right-20 lg:right-[12%] xl:right-[25%] p-3 rounded-full active:bg-grey transition-colors duration-300 outline-none group"
 		@click="openModal"
 		@keydown.esc="closeModal"
