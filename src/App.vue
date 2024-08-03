@@ -33,10 +33,9 @@
 
 				<div class="flex justify-between items-center space-x-5 lg:space-x-4">
 					<select
-						@change="Filter"
+						v-model="selectedFilter"
 						class="rounded-md h-10 bg-violet text-grey px-2 py-1 lg:w-28 outline-none uppercase font-medium text-xs"
 					>
-						<option disabled selected>Filter</option>
 						<option value="all">All</option>
 						<option value="completed">Completed</option>
 						<option value="uncompleted">Uncompleted</option>
@@ -166,16 +165,38 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import Modal from './components/Modal.vue'
 import Todos from './components/Todos.vue'
 
 let modal = ref(false)
+
 const todos = ref([
 	{ id: 1, title: 'Note #1', completed: false },
 	{ id: 2, title: 'Note #2', completed: true },
 	{ id: 3, title: 'Note #3', completed: false },
 ])
+
+const searchQuery = ref('')
+const selectedFilter = ref('all')
+
+const displayedTodos = computed(() => {
+	let filteredTodos = todos.value.filter(todo =>
+		todo.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+	)
+
+	if (selectedFilter.value === 'completed') {
+		filteredTodos = filteredTodos.filter(todo => todo.completed)
+	} else if (selectedFilter.value === 'uncompleted') {
+		filteredTodos = filteredTodos.filter(todo => !todo.completed)
+	}
+
+	return filteredTodos
+})
+
+watch([searchQuery, selectedFilter], () => {
+	displayedTodos.value = displayedTodos.value
+})
 
 function getUserTheme() {
 	if (
@@ -221,42 +242,16 @@ function closeModal() {
 }
 
 const removeTodo = function (id) {
-	displayedTodos.value = displayedTodos.value.filter(t => t.id !== id)
 	todos.value = todos.value.filter(t => t.id !== id)
 }
 
 function addTodo(todo) {
 	todos.value.push(todo)
-	displayedTodos.value.push(todo)
 }
 
-const displayedTodos = ref([...todos.value])
-
-const Filter = e => {
-	const value = e.target.value
-	displayedTodos.value = filteredTodos(value)
+const focusInput = () => {
+	if (inputRef.value) {
+		inputRef.value.focus()
+	}
 }
-
-const filteredTodos = value => {
-	if (value === 'all') {
-		return todos.value
-	}
-
-	if (value === 'completed') {
-		return todos.value.filter(t => t.completed)
-	}
-
-	if (value === 'uncompleted') {
-		return todos.value.filter(t => !t.completed)
-	}
-	return todos.value
-}
-
-const searchQuery = ref('')
-
-watch(searchQuery, newQuery => {
-	displayedTodos.value = todos.value.filter(todo =>
-		todo.title.toLowerCase().trim().includes(newQuery.toLowerCase().trim())
-	)
-})
 </script>
