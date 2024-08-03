@@ -15,6 +15,7 @@
 				</h3>
 				<input
 					v-model="todoTitle"
+					maxlength="30"
 					type="text"
 					placeholder="Input your note..."
 					class="py-2 pl-4 rounded-md placeholder:dark:text-[#666] bg-transparent border-2 w-full pr-4 border-violet dark:border-grey transition-colors duration-300 placeholder:select-none focus:dark:border-violet"

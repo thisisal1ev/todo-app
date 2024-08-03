@@ -41,7 +41,7 @@
 					</svg>
 				</span>
 				<span
-					class="font-medium text-sm sm:text-base lg:text-xl leading-5 peer-checked:line-through text-black dark:text-white transition-colors duration-300"
+					class="inline-block font-medium text-sm sm:text-base lg:text-xl leading-5 peer-checked:line-through text-black dark:text-white transition-colors duration-300"
 				>
 					{{ value.title }}
 				</span>
@@ -56,7 +56,7 @@
 					:id="'todo-' + value.id"
 					type="text"
 					placeholder="Enter new title"
-					class="pl-3 py-2 pr-3 bg-white border-violet dark:border-grey dark:bg-mainBlack border-2 focus:!border-violet transition-colors duration-300 rounded-md"
+					class="pl-3 py-2 pr-3 bg-white border-violet dark:border-grey dark:bg-mainBlack border-2 focus:!border-violet transition-colors duration-300 rounded-md max-w-32 sm:max-w-max"
 					value="value.title"
 					@keydown.enter=";(value.title = input.trim()), (rename = !rename)"
 					v-model="input"
