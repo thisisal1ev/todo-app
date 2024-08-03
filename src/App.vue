@@ -14,6 +14,7 @@
 					<input
 						class="relative w-full lg:w-full py-2 h-10 pl-4 pr-10 rounded-md outline-none bg-white border-2 border-violet dark:border-grey dark:bg-mainBlack placeholder:font-medium placeholder:text-base placeholder:leading-4 placeholder:text-[#C3C1E5] placeholder:dark:text-[#666] placeholder:select-none focus:dark:border-violet transition-colors duration-300"
 						type="search"
+						v-model="searchQuery"
 						placeholder="Search note..."
 					/>
 					<svg
@@ -165,7 +166,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Modal from './components/Modal.vue'
 import Todos from './components/Todos.vue'
 
@@ -250,4 +251,12 @@ const filteredTodos = value => {
 	}
 	return todos.value
 }
+
+const searchQuery = ref('')
+
+watch(searchQuery, newQuery => {
+	displayedTodos.value = todos.value.filter(todo =>
+		todo.title.toLowerCase().includes(newQuery.toLowerCase())
+	)
+})
 </script>
