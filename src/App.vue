@@ -256,7 +256,7 @@ const searchQuery = ref('')
 
 watch(searchQuery, newQuery => {
 	displayedTodos.value = todos.value.filter(todo =>
-		todo.title.toLowerCase().includes(newQuery.toLowerCase())
+		todo.title.toLowerCase().trim().includes(newQuery.toLowerCase().trim())
 	)
 })
 </script>
