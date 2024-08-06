@@ -5,7 +5,9 @@
 @tailwind utilities;
 
 @layer base {
-	* {
+	*,
+	*::before,
+	*::after {
 		@apply outline-none;
 	}
 
