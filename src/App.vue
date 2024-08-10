@@ -165,7 +165,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import Modal from './components/Modal.vue'
 import Todos from './components/Todos.vue'
 
