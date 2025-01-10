@@ -3,19 +3,25 @@ import { computed, onMounted, ref, watch } from 'vue'
 import Modal from './components/Modal.vue'
 import Todos from './components/Todos.vue'
 
+interface Todo {
+	id: number
+	title: string
+	completed: boolean
+}
+
 let modal = ref<boolean>(false)
 
-const todos = ref([
+const todos = ref<Todo[]>([
 	{ id: 1, title: 'Note #1', completed: false },
 	{ id: 2, title: 'Note #2', completed: true },
 	{ id: 3, title: 'Note #3', completed: false },
 ])
 
-const searchQuery = ref('')
-const selectedFilter = ref('all')
+const searchQuery = ref<string>('')
+const selectedFilter = ref<string>('all')
 
-const displayedTodos = computed(() => {
-	let filteredTodos = todos.value.filter(todo =>
+const displayedTodos = computed<Todo[]>((): Todo[] => {
+	let filteredTodos = todos.value.filter((todo: Todo) =>
 		todo.title.toLowerCase().includes(searchQuery.value.toLowerCase())
 	)
 
@@ -32,7 +38,7 @@ watch([searchQuery, selectedFilter], () => {
 	displayedTodos.value
 })
 
-function getUserTheme() {
+function getUserTheme(): string {
 	if (
 		window.matchMedia &&
 		window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -42,9 +48,9 @@ function getUserTheme() {
 	return 'light'
 }
 
-const userTheme = ref(getUserTheme())
-const storedTheme = localStorage.getItem('theme')
-const isDarkMode = ref(
+const userTheme = ref<string>(getUserTheme())
+const storedTheme: string | null = localStorage.getItem('theme')
+const isDarkMode = ref<boolean>(
 	storedTheme ? storedTheme === 'dark' : userTheme.value === 'dark'
 )
 
@@ -56,7 +62,7 @@ onMounted(() => {
 	}
 })
 
-const toggleDarkMode = () => {
+const toggleDarkMode = (): void => {
 	isDarkMode.value = !isDarkMode.value
 	if (isDarkMode.value) {
 		document.documentElement.classList.add('dark')
@@ -67,26 +73,20 @@ const toggleDarkMode = () => {
 	}
 }
 
-function openModal() {
+function openModal(): void {
 	modal.value = true
 }
 
-function closeModal() {
+function closeModal(): void {
 	modal.value = false
 }
 
-const removeTodo = function (id) {
+const removeTodo = function (id: number): void {
 	todos.value = todos.value.filter(t => t.id !== id)
 }
 
-function addTodo(todo) {
+function addTodo(todo: Todo) {
 	todos.value.push(todo)
-}
-
-const focusInput = () => {
-	if (inputRef.value) {
-		inputRef.value.focus()
-	}
 }
 </script>
 
