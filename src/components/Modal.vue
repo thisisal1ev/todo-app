@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineProps, defineEmits, ref } from 'vue'
+import { ref } from 'vue'
 
 interface Props {
 	modalProps: boolean

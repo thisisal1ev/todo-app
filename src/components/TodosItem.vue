@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Todo } from '@/App.vue'
-import { defineProps, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { CheckIcon, EditIcon, TrashIcon, XIcon } from './icons'
 
 interface Props {
