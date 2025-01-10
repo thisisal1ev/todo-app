@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import Modal from './components/Modal.vue'
 import Todos from './components/Todos.vue'
 
-interface Todo {
+export interface Todo {
 	id: number
 	title: string
 	completed: boolean

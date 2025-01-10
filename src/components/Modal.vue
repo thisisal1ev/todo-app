@@ -1,3 +1,36 @@
+<script lang="ts" setup>
+import { defineProps, defineEmits, ref } from 'vue'
+
+interface Props {
+	modalProps: boolean
+}
+
+const props = defineProps<Props>()
+
+const emit = defineEmits(['close', 'addTodo'])
+
+const modal = ref<boolean>(props.modalProps)
+const todoTitle = ref<string>('')
+
+function close(): void {
+	emit('close')
+}
+
+function onSubmit(): void {
+	if (todoTitle.value.trim()) {
+		const newTodo = {
+			id: Date.now(),
+			title: todoTitle.value,
+			completed: false,
+		}
+
+		emit('addTodo', newTodo)
+	}
+
+	close()
+}
+</script>
+
 <template>
 	<div v-if="modal" class="overlay">
 		<form
@@ -39,36 +72,3 @@
 		</form>
 	</div>
 </template>
-
-<script lang="ts" setup>
-import { defineProps, defineEmits, ref } from 'vue'
-
-interface Props {
-	modalProps: boolean
-}
-
-const props = defineProps<Props>()
-
-const emit = defineEmits(['close', 'addTodo'])
-
-const modal = ref(props.modalProps)
-const todoTitle = ref('')
-
-function close() {
-	emit('close')
-}
-
-function onSubmit() {
-	if (todoTitle.value.trim()) {
-		const newTodo = {
-			id: Date.now(),
-			title: todoTitle.value,
-			completed: false,
-		}
-
-		emit('addTodo', newTodo)
-	}
-
-	close()
-}
-</script>

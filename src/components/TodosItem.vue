@@ -1,7 +1,29 @@
+<script lang="ts" setup>
+import { Todo } from '@/App.vue'
+import { defineProps, ref, watch } from 'vue'
+
+interface Props {
+	todo: Todo[]
+}
+
+defineEmits(['remove-todo'])
+defineProps<Props>()
+const rename = ref<boolean>(false)
+const inputValue = ref<string>('')
+
+watch(inputValue, newValue => {
+	inputValue.value = newValue
+})
+
+const toggleRename = (): void => {
+	rename.value = !rename.value
+}
+</script>
+
 <template>
 	<li
-		v-for="(value, key, index) in todo"
-		:key="index"
+		v-for="value in todo"
+		:key="value.id"
 		@click="rename = false"
 		class="border-violet border-t first:border-none px-4 py-6 flex items-center justify-between h-24 group"
 	>
@@ -53,18 +75,19 @@
 				v-else
 			>
 				<input
-					:id="'todo-' + value.id"
+					:id="`todo-${value.id}`"
 					type="text"
 					placeholder="Enter new title"
 					class="pl-3 py-2 pr-3 bg-white border-violet dark:border-grey dark:bg-mainBlack border-2 focus:!border-violet transition-colors duration-300 rounded-md max-w-32 sm:max-w-max"
-					value="value.title"
-					@keydown.enter=";(value.title = input.trim()), (rename = !rename)"
-					v-model="input"
+					@keydown.enter="
+						;(value.title = inputValue.trim()), (rename = !rename)
+					"
+					v-model="inputValue"
 				/>
 				<button
 					title="apply btn"
 					class="p-2 rounded-full transition-colors duration-300 hover:dark:bg-slate-100/15 flex justify-center items-center outline-none active:dark:bg-slate-100/30 hover:bg-black/15 active:bg-black/30"
-					@click=";(value.title = input), (rename = !rename)"
+					@click=";(value.title = inputValue), (rename = !rename)"
 				>
 					<svg
 						class="ml-0.5"
@@ -175,31 +198,3 @@
 		</div>
 	</li>
 </template>
-
-<script setup>
-import { defineProps, ref, watch } from 'vue'
-
-const rename = ref(false)
-const input = ref('')
-
-const todo = defineProps({
-	todo: {
-		type: Object,
-		required: true,
-	},
-})
-
-watch(input, newValue => {
-	input.value = newValue
-})
-
-const toggleRename = () => {
-	rename.value = !rename.value
-}
-
-const emit = defineEmits(['remove-todo'])
-
-const removeTodo = () => {
-	emit('remove-todo', todo.id)
-}
-</script>
