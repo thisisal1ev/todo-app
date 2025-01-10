@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import Modal from './components/Modal.vue'
-import Todos from './components/Todos.vue'
+import { Modal, Todos } from './components'
 
 export interface Todo {
 	id: number
