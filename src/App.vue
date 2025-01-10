@@ -1,3 +1,95 @@
+<script lang="ts" setup>
+import { computed, onMounted, ref, watch } from 'vue'
+import Modal from './components/Modal.vue'
+import Todos from './components/Todos.vue'
+
+let modal = ref<boolean>(false)
+
+const todos = ref([
+	{ id: 1, title: 'Note #1', completed: false },
+	{ id: 2, title: 'Note #2', completed: true },
+	{ id: 3, title: 'Note #3', completed: false },
+])
+
+const searchQuery = ref('')
+const selectedFilter = ref('all')
+
+const displayedTodos = computed(() => {
+	let filteredTodos = todos.value.filter(todo =>
+		todo.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+	)
+
+	if (selectedFilter.value === 'completed') {
+		filteredTodos = filteredTodos.filter(todo => todo.completed)
+	} else if (selectedFilter.value === 'uncompleted') {
+		filteredTodos = filteredTodos.filter(todo => !todo.completed)
+	}
+
+	return filteredTodos
+})
+
+watch([searchQuery, selectedFilter], () => {
+	displayedTodos.value
+})
+
+function getUserTheme() {
+	if (
+		window.matchMedia &&
+		window.matchMedia('(prefers-color-scheme: dark)').matches
+	) {
+		return 'dark'
+	}
+	return 'light'
+}
+
+const userTheme = ref(getUserTheme())
+const storedTheme = localStorage.getItem('theme')
+const isDarkMode = ref(
+	storedTheme ? storedTheme === 'dark' : userTheme.value === 'dark'
+)
+
+onMounted(() => {
+	if (isDarkMode.value) {
+		document.documentElement.classList.add('dark')
+	} else {
+		document.documentElement.classList.remove('dark')
+	}
+})
+
+const toggleDarkMode = () => {
+	isDarkMode.value = !isDarkMode.value
+	if (isDarkMode.value) {
+		document.documentElement.classList.add('dark')
+		localStorage.setItem('theme', 'dark')
+	} else {
+		document.documentElement.classList.remove('dark')
+		localStorage.setItem('theme', 'light')
+	}
+}
+
+function openModal() {
+	modal.value = true
+}
+
+function closeModal() {
+	modal.value = false
+}
+
+const removeTodo = function (id) {
+	todos.value = todos.value.filter(t => t.id !== id)
+}
+
+function addTodo(todo) {
+	todos.value.push(todo)
+}
+
+const focusInput = () => {
+	if (inputRef.value) {
+		inputRef.value.focus()
+	}
+}
+</script>
+
 <template>
 	<section class="py-10">
 		<div class="container">
@@ -163,95 +255,3 @@
 		</svg>
 	</button>
 </template>
-
-<script setup>
-import { computed, onMounted, ref, watch } from 'vue'
-import Modal from './components/Modal.vue'
-import Todos from './components/Todos.vue'
-
-let modal = ref(false)
-
-const todos = ref([
-	{ id: 1, title: 'Note #1', completed: false },
-	{ id: 2, title: 'Note #2', completed: true },
-	{ id: 3, title: 'Note #3', completed: false },
-])
-
-const searchQuery = ref('')
-const selectedFilter = ref('all')
-
-const displayedTodos = computed(() => {
-	let filteredTodos = todos.value.filter(todo =>
-		todo.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-	)
-
-	if (selectedFilter.value === 'completed') {
-		filteredTodos = filteredTodos.filter(todo => todo.completed)
-	} else if (selectedFilter.value === 'uncompleted') {
-		filteredTodos = filteredTodos.filter(todo => !todo.completed)
-	}
-
-	return filteredTodos
-})
-
-watch([searchQuery, selectedFilter], () => {
-	displayedTodos.value = displayedTodos.value
-})
-
-function getUserTheme() {
-	if (
-		window.matchMedia &&
-		window.matchMedia('(prefers-color-scheme: dark)').matches
-	) {
-		return 'dark'
-	}
-	return 'light'
-}
-
-const userTheme = ref(getUserTheme())
-const storedTheme = localStorage.getItem('theme')
-const isDarkMode = ref(
-	storedTheme ? storedTheme === 'dark' : userTheme.value === 'dark'
-)
-
-onMounted(() => {
-	if (isDarkMode.value) {
-		document.documentElement.classList.add('dark')
-	} else {
-		document.documentElement.classList.remove('dark')
-	}
-})
-
-const toggleDarkMode = () => {
-	isDarkMode.value = !isDarkMode.value
-	if (isDarkMode.value) {
-		document.documentElement.classList.add('dark')
-		localStorage.setItem('theme', 'dark')
-	} else {
-		document.documentElement.classList.remove('dark')
-		localStorage.setItem('theme', 'light')
-	}
-}
-
-function openModal() {
-	modal.value = true
-}
-
-function closeModal() {
-	modal.value = false
-}
-
-const removeTodo = function (id) {
-	todos.value = todos.value.filter(t => t.id !== id)
-}
-
-function addTodo(todo) {
-	todos.value.push(todo)
-}
-
-const focusInput = () => {
-	if (inputRef.value) {
-		inputRef.value.focus()
-	}
-}
-</script>

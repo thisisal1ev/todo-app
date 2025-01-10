@@ -40,16 +40,14 @@
 	</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { defineProps, defineEmits, ref } from 'vue'
 
-const props = defineProps({
-	modalProps: {
-		type: Boolean,
-		default: true,
-		required: true,
-	},
-})
+interface Props {
+	modalProps: boolean
+}
+
+const props = defineProps<Props>()
 
 const emit = defineEmits(['close', 'addTodo'])
 
