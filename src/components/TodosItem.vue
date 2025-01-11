@@ -12,7 +12,7 @@ const { todo } = defineProps<Props>()
 
 const rename = ref<boolean>(false)
 const inputValue = ref<string>('')
-const toggleRename = (newTitle?: string): void => {
+function toggleRename(newTitle?: string): void {
 	rename.value = !rename.value
 
 	if (newTitle) {

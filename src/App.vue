@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import {
 	Modal,
 	MoonIcon,
@@ -16,16 +16,13 @@ export interface Todo {
 }
 
 let modal = ref<boolean>(false)
-
 const todos = ref<Todo[]>([
 	{ id: 1, title: 'Note #1', completed: false },
 	{ id: 2, title: 'Note #2', completed: true },
 	{ id: 3, title: 'Note #3', completed: false },
 ])
-
 const searchQuery = ref<string>('')
 const selectedFilter = ref<string>('all')
-
 const displayedTodos = computed<Todo[]>((): Todo[] => {
 	let filteredTodos = todos.value.filter((todo: Todo) =>
 		todo.title.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -64,7 +61,7 @@ onMounted(() => {
 	}
 })
 
-const toggleDarkMode = (): void => {
+function toggleDarkMode(): void {
 	isDarkMode.value = !isDarkMode.value
 	if (isDarkMode.value) {
 		document.documentElement.classList.add('dark')
@@ -79,7 +76,7 @@ function openCloseModal(): void {
 	modal.value = !modal.value
 }
 
-const removeTodo = function (id: number): void {
+function removeTodo(id: number): void {
 	todos.value = todos.value.filter(t => t.id !== id)
 }
 
