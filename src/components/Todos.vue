@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Todo } from '@/App.vue'
+import { Todo } from '../App.vue'
 import TodosItem from './TodosItem.vue'
 
 interface Props {

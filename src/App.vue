@@ -40,10 +40,6 @@ const displayedTodos = computed<Todo[]>((): Todo[] => {
 	return filteredTodos
 })
 
-watch([searchQuery, selectedFilter], () => {
-	displayedTodos.value
-})
-
 function getUserTheme(): string {
 	if (
 		window.matchMedia &&
@@ -79,12 +75,8 @@ const toggleDarkMode = (): void => {
 	}
 }
 
-function openModal(): void {
-	modal.value = true
-}
-
-function closeModal(): void {
-	modal.value = false
+function openCloseModal(): void {
+	modal.value = !modal.value
 }
 
 const removeTodo = function (id: number): void {
@@ -151,7 +143,7 @@ function addTodo(todo: Todo) {
 			</div>
 
 			<Todos
-				v-if="displayedTodos.length"
+				v-if="displayedTodos.length >= 0"
 				:todos="displayedTodos"
 				@remove-todo="removeTodo"
 			/>
@@ -187,11 +179,10 @@ function addTodo(todo: Todo) {
 
 			<Modal
 				v-if="modal"
-				:modalProps="modal"
 				@addTodo="addTodo"
-				@close="closeModal"
-				@keydown.esc="closeModal"
-				@click="closeModal"
+				@toggleModal="openCloseModal"
+				@keydown.esc="openCloseModal"
+				@click="openCloseModal"
 			/>
 		</div>
 	</section>
@@ -199,8 +190,8 @@ function addTodo(todo: Todo) {
 	<button
 		title="modal btn"
 		class="bg-violet border-2 border-violet fixed bottom-8 right-8 md:right-20 lg:right-[12%] xl:right-[25%] p-3 rounded-full active:bg-grey transition-colors duration-300 outline-none group"
-		@click="openModal"
-		@keydown.esc="closeModal"
+		@click="openCloseModal"
+		@keydown.esc="openCloseModal"
 	>
 		<PlusIcon
 			classInner="fill-[#f7f7f7] group-active:fill-violet transition-colors duration-300"

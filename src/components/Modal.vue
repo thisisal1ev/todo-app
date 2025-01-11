@@ -1,20 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+const emit = defineEmits(['toggleModal', 'addTodo'])
 
-interface Props {
-	modalProps: boolean
-}
-
-const props = defineProps<Props>()
-
-const emit = defineEmits(['close', 'addTodo'])
-
-const modal = ref<boolean>(props.modalProps)
 const todoTitle = ref<string>('')
-
-function close(): void {
-	emit('close')
-}
 
 function onSubmit(): void {
 	if (todoTitle.value.trim()) {
@@ -27,15 +15,15 @@ function onSubmit(): void {
 		emit('addTodo', newTodo)
 	}
 
-	close()
+	emit('toggleModal')
 }
 </script>
 
 <template>
-	<div v-if="modal" class="overlay">
+	<div class="overlay">
 		<form
 			@submit.prevent="onSubmit"
-			@keydown.esc="close"
+			@keydown.esc="$emit('toggleModal')"
 			@click.stop
 			class="mx-10 md:max-w-[500px] w-full py-[18px] border-transparent px-8 bg-white dark:bg-mainBlack rounded-lg border dark:border-grey transition-colors duration-300 flex flex-col"
 			tabindex="0"
@@ -59,7 +47,7 @@ function onSubmit(): void {
 				<button
 					type="button"
 					class="uppercase font-medium text-lg leading-[18px] py-2 px-5 border border-violet rounded-md bg-white dark:bg-mainBlack text-violet hover:text-white hover:!bg-violet active:!bg-white active:text-violet dark:active:!bg-mainBlack transition-colors duration-300"
-					@click="close"
+					@click="$emit('toggleModal')"
 				>
 					Cancel
 				</button>

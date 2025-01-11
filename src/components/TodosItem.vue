@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { Todo } from '../App.vue'
-import { ref, watch } from 'vue'
 import { CheckIcon, EditIcon, TrashIcon, XIcon } from './icons'
 
 interface Props {
@@ -8,23 +8,22 @@ interface Props {
 }
 
 defineEmits(['remove-todo'])
-defineProps<Props>()
+const { todo } = defineProps<Props>()
+
 const rename = ref<boolean>(false)
 const inputValue = ref<string>('')
-
-watch(inputValue, newValue => {
-	inputValue.value = newValue
-})
-
-const toggleRename = (): void => {
+const toggleRename = (newTitle?: string): void => {
 	rename.value = !rename.value
+
+	if (newTitle) {
+		todo.title = newTitle.trim()
+	}
 }
 </script>
 
 <template>
 	<li
 		:key="todo.id"
-		@click="rename = false"
 		class="border-violet border-t first:border-none px-4 py-6 flex items-center justify-between h-24 group"
 	>
 		<div class="flex items-center space-x-4 mr-5 cursor-pointer">
@@ -42,7 +41,7 @@ const toggleRename = (): void => {
 				/>
 
 				<span
-					class="absolute text-white transition-opacity opacity-0 pointer-events-none -translate-x-2/4 top-1 peer-checked:opacity-100"
+					class="absolute text-white transition-opacity opacity-0 pointer-events-none -translate-x-2/4 top-1.5 peer-checked:opacity-100"
 				>
 					<CheckIcon />
 				</span>
@@ -56,8 +55,7 @@ const toggleRename = (): void => {
 
 			<label
 				class="flex items-center justify-between space-x-3"
-				:for="'todo-' + todo.id"
-				@click.stop
+				:for="`todo-${todo.id}`"
 				v-else
 			>
 				<input
@@ -65,14 +63,14 @@ const toggleRename = (): void => {
 					type="text"
 					placeholder="Enter new title"
 					class="pl-3 py-2 pr-3 bg-white border-violet dark:border-grey dark:bg-mainBlack border-2 focus:!border-violet transition-colors duration-300 rounded-md max-w-32 sm:max-w-max"
-					@keydown.enter=";(todo.title = inputValue.trim()), (rename = !rename)"
+					@keydown.enter="toggleRename(inputValue.trim())"
 					v-model="inputValue"
 				/>
 
 				<button
 					title="apply btn"
 					class="p-2 rounded-full transition-colors duration-300 hover:dark:bg-slate-100/15 flex justify-center items-center outline-none active:dark:bg-slate-100/30 hover:bg-black/15 active:bg-black/30"
-					@click=";(todo.title = inputValue), (rename = !rename)"
+					@click="toggleRename(inputValue.trim())"
 				>
 					<CheckIcon />
 				</button>
@@ -85,7 +83,7 @@ const toggleRename = (): void => {
 			<button
 				title="rename btn"
 				class="p-2 rounded-full transition-colors duration-300 hover:dark:bg-slate-100/15 flex justify-center items-center outline-none active:dark:bg-slate-100/30 hover:bg-black/15 active:bg-black/30"
-				@click.stop="toggleRename"
+				@click="toggleRename()"
 			>
 				<EditIcon
 					v-if="!rename"
