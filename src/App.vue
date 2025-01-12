@@ -140,7 +140,7 @@ function addTodo(todo: Todo) {
 			</div>
 
 			<Todos
-				v-if="displayedTodos.length >= 0"
+				v-if="displayedTodos.length > 0"
 				:todos="displayedTodos"
 				@remove-todo="removeTodo"
 			/>
