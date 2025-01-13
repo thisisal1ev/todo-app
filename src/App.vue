@@ -8,23 +8,18 @@ import {
 	SunIcon,
 	Todos,
 } from './components'
-
-export interface Todo {
-	id: number
-	title: string
-	completed: boolean
-}
+import type { Filter, TodoProps } from './@types'
 
 let modal = ref<boolean>(false)
-const todos = ref<Todo[]>([
+const todos = ref<TodoProps[]>([
 	{ id: 1, title: 'Note #1', completed: false },
 	{ id: 2, title: 'Note #2', completed: true },
 	{ id: 3, title: 'Note #3', completed: false },
 ])
 const searchQuery = ref<string>('')
-const selectedFilter = ref<string>('all')
-const displayedTodos = computed<Todo[]>((): Todo[] => {
-	let filteredTodos = todos.value.filter((todo: Todo) =>
+const selectedFilter = ref<Filter>('all')
+const displayedTodos = computed<TodoProps[]>((): TodoProps[] => {
+	let filteredTodos = todos.value.filter((todo: TodoProps) =>
 		todo.title.toLowerCase().includes(searchQuery.value.toLowerCase())
 	)
 
@@ -80,7 +75,7 @@ function removeTodo(id: number): void {
 	todos.value = todos.value.filter(t => t.id !== id)
 }
 
-function addTodo(todo: Todo) {
+function addTodo(todo: TodoProps) {
 	todos.value.push(todo)
 }
 </script>

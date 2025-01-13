@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Todo } from '../App.vue'
 import { CheckIcon, EditIcon, TrashIcon, XIcon } from './icons'
-import Checkbox from './Checkbox.vue'
-import IconButton from './IconButton.vue'
+import { Checkbox, IconButton } from './'
+import { TodoProps } from '@/@types'
 
 interface Props {
-	todo: Todo
+	todo: TodoProps
 }
 
 defineEmits(['remove-todo'])

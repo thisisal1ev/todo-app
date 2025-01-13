@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { Todo } from '../App.vue'
+import { TodoProps } from '@/@types'
 import TodosItem from './TodosItem.vue'
 
 interface Props {
-	todos: Todo[]
+	todos: TodoProps[]
 }
 
 defineProps<Props>()
